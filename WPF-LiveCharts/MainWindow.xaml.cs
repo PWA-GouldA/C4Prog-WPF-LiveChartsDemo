@@ -1,6 +1,6 @@
 ﻿using LiveCharts;
 using LiveCharts.Wpf;
-using System;
+using System.Collections.Generic;
 using System.Windows;
 
 
@@ -17,54 +17,38 @@ namespace WPF_LiveCharts
     /// </summary>
     public partial class MainWindow : Window
     {
-        public SeriesCollection ChartData;
+        public SeriesCollection LineChartData;
+        public SeriesCollection ColumnChartData;
         public SeriesCollection PieChartData;
-        public string[] Labels;
 
 
         public MainWindow()
         {
             InitializeComponent();
-            DisplayChart();
+            DisplayLineChart();
             DisplayPieChart();
+            DisplayColumnChart();
         }
 
-        public void DisplayChart()
+        public void DisplayLineChart()
         {
-            ChartData = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Values = new ChartValues<int> { 3, 9, 2, 7 },
-                    Title="Small",
-                    LineSmoothness=0,
-                },
-                new LineSeries
-                {
-                    Values = new ChartValues<int> { 5, 11, 4, 9 },
-                    Title="Big",
-                    LineSmoothness=.5,
-                }
-            };
+            int[] data = { 5, 10, -1, 12, 4};
 
-            Labels = new[] { "Jan", "Feb", "Mar", "Apr" };
+            // Add the data array values to the chart
+            LineChartData = new SeriesCollection();
+            LineSeries ChartPoints = new LineSeries();
+            LineChartData.Add(ChartPoints);
 
-            ChartDemo.Series = ChartData;
+            LineChartData[0].Values = new ChartValues<int>(data);
+            LineChartDemo.Series = LineChartData;
 
-            ChartData.Add(new LineSeries
-            {
-                Values = new ChartValues<int> { 1, 7, -1, 5 },
-                Title = "Medium",
-                LineSmoothness = 1,
-                PointGeometry = DefaultGeometries.Square,
-                PointGeometrySize = 15,
-            });
-
-            ChartData[0].Values.Add(0);
-            ChartData[1].Values.Add(10);
-            ChartData[2].Values.Add(12);
+            ChartPoints.Title = "Days";
+            ChartPoints.LineSmoothness= 0.8;
+            ChartPoints.PointGeometry= DefaultGeometries.Diamond;
+            ChartPoints.PointGeometrySize = 10;
 
         } // end Display Chart
+
 
         public void DisplayPieChart()
         {
@@ -84,6 +68,23 @@ namespace WPF_LiveCharts
             }
 
         } // end of Display Pie Chart
+
+
+
+        public void DisplayColumnChart()
+        {
+            List<int> data = new List<int> { 3, 7, 2, 9, 11 };
+
+            // Add the data array values to the chart
+            ColumnChartData = new SeriesCollection();
+            ColumnSeries ChartPoints = new ColumnSeries();
+            ColumnChartData.Add(ChartPoints);
+
+            ColumnChartData[0].Values = new ChartValues<int>(data);
+            ColumnChartDemo.Series = ColumnChartData;
+
+        } // end Display Chart
+
 
     }
 }
